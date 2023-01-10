@@ -1,8 +1,10 @@
 /* modelo_logico: */
 
 CREATE TABLE bandeiras (
-    id_bandeiras  SERIAL      PRIMARY KEY,
-    nome_bandeira VARCHAR(60) UNIQUE NOT NULL
+    id_bandeiras  SERIAL,
+    nome_bandeira VARCHAR(60) NOT NULL,
+	CONSTRAINT pk_bandeiras PRIMARY KEY (id_bandeiras),
+	CONSTRAINT un_bandeiras UNIQUE (nome_bandeira)
 );
 
 CREATE TABLE combustiveis (
@@ -16,17 +18,11 @@ CREATE TABLE estados (
     id_estado    SERIAL,
     sigla_estado VARCHAR(02) NOT NULL,
     sigla_regiao VARCHAR(02) NOT NULL,
-	CONSTRAINT pk_estados PRIMARY KEY (id_estado),
-	CONSTRAINT un_estados_1 UNIQUE (sigla_estado),
-	CONSTRAINT un_estados_2 UNIQUE (sigla_regiao),
+	CONSTRAINT pk_estados   PRIMARY KEY (id_estado),
+	CONSTRAINT un_estados   UNIQUE (sigla_estado, sigla_regiao),
 	CONSTRAINT ck_estados   CHECK (sigla_regiao IN ('N', 'S', 'NE', 'SE', 'CO'))
 );
 
--- ANO: só aceitar até o ano atual
--- VALOR: aceitar apenas valores maiores que ZERO
---        limitar até no máximo 100,00 (com 2 casas decimais)
--- Transferir as restrições de chave estrangeira para dentro 
--- da criação da tabla
 CREATE TABLE coletas_anp (
     id_coleta      INTEGER,
     ano            INTEGER,
